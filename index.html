@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Victoria Trnava - Svadobná & Eventová reštaurácia</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{background:#020818;color:#fff;font-family:'Lato',sans-serif;overflow-x:hidden}
+h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,6vw,5rem);line-height:1.1}h2{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,4vw,3rem);line-height:1.2}h3{font-family:'Playfair Display',serif;font-size:clamp(1.1rem,3vw,1.8rem)}p{font-size:clamp(0.95rem,2vw,1.1rem);line-height:1.7}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px}.btn{display:inline-block;padding:clamp(12px,2vw,18px) clamp(20px,4vw,44px);border-radius:50px}canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0}
+@media(max-width:768px){.nav-dots{display:none}.mascot{width:48px!important;bottom:16px!important;left:auto!important;right:16px!important}.btn{width:100%;display:block;text-align:center;margin:8px 0}.contact-grid{flex-direction:column}.scene-content{padding:16px}}@media(max-width:480px){.cards{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}}
+#progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#C8922A,#E8B84B);z-index:1000}.nav{position:fixed;top:0;left:0;right:0;z-index:999;padding:16px 32px;display:flex;justify-content:space-between;align-items:center;transition:background 0.3s}.nav.scrolled{background:rgba(2,8,24,0.95);backdrop-filter:blur(10px)}.nav-logo{font-family:'Playfair Display',serif;font-size:1.4rem;color:#C8922A;font-weight:700}
+.nav-dots{position:fixed;right:24px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;z-index:999}.dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.3);cursor:pointer;transition:all 0.3s}.dot.active{background:#C8922A;transform:scale(1.4)}
+.section{height:500vh;position:relative}.sticky{position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}.scene-content{position:relative;z-index:10;max-width:900px;width:100%;opacity:0;transform:translateY(30px);transition:opacity 0.9s ease,transform 0.9s ease;padding:clamp(20px,5vw,80px)}.scene-content.active{opacity:1;transform:translateY(0)}
+.accent{color:#C8922A}.divider{width:80px;height:3px;background:linear-gradient(90deg,#C8922A,#E8B84B);margin:20px 0;border-radius:2px}.badge{display:inline-block;padding:6px 18px;border:1px solid #C8922A;border-radius:50px;font-size:0.85rem;color:#C8922A;margin-bottom:20px;letter-spacing:2px;text-transform:uppercase}
+.stat-box{background:rgba(200,146,42,0.1);border:1px solid rgba(200,146,42,0.3);border-radius:12px;padding:20px;text-align:center}.stat-num{font-family:'Playfair Display',serif;font-size:2.5rem;color:#C8922A}.stat-label{font-size:0.85rem;opacity:0.7;margin-top:4px}
+.card{background:rgba(255,255,255,0.05);border:1px solid rgba(200,146,42,0.2);border-radius:16px;padding:24px;transition:transform 0.3s,border-color 0.3s}.card:hover{transform:translateY(-4px);border-color:#C8922A}.card-icon{font-size:2rem;margin-bottom:12px}.card-title{font-family:'Playfair Display',serif;font-size:1.2rem;color:#C8922A;margin-bottom:8px}
+.quote-text{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(1.2rem,3vw,2rem);color:#C8922A;line-height:1.5;margin-bottom:20px}.contact-grid{display:flex;gap:32px;flex-wrap:wrap}.contact-item{display:flex;align-items:flex-start;gap:12px}.contact-icon{font-size:1.5rem;color:#C8922A}.contact-text h3{font-size:1rem;color:#C8922A;margin-bottom:4px}
+.mascot{position:fixed;bottom:50px;left:50px;width:80px;z-index:1000;cursor:pointer}.speech-bubble{position:fixed;bottom:140px;left:20px;background:rgba(200,146,42,0.95);color:#000;padding:10px 14px;border-radius:12px;border-bottom-left-radius:0;font-size:0.85rem;max-width:200px;z-index:1000;opacity:0;transition:opacity 0.3s;font-weight:700}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<canvas id="canvas"></canvas>
+<nav class="nav" id="nav"><div class="nav-logo">Victoria ♡</div></nav>
+<div class="nav-dots"><div class="dot active" onclick="scrollToScene(0)"></div><div class="dot" onclick="scrollToScene(1)"></div><div class="dot" onclick="scrollToScene(2)"></div><div class="dot" onclick="scrollToScene(3)"></div><div class="dot" onclick="scrollToScene(4)"></div></div>
+
+<div class="section" id="s0"><div class="sticky"><div class="scene-content" id="sc0">
+<div class="badge">💒 Svadobná & Eventová sála · Trnava</div>
+<h1><span class="accent">Victoria</span> Trnava<br>Váš eventový raj</h1>
+<div class="divider"></div>
+<p style="max-width:600px;opacity:0.85;margin-bottom:32px">Prvá eventová reštaurácia v Trnave — elegantná svadobná sála, úžasné jedlo a individuálny prístup. Svadobné, rodinné oslavy aj firemné večierky na nezabudnuteľnej úrovni.</p>
+<a href="tel:0905334123" style="display:inline-block;background:#C8922A;color:#000;text-decoration:none;font-weight:700;padding:18px 44px;border-radius:50px;font-size:1rem">💒 Rezervovať termín</a>
+<a href="#" onclick="scrollToScene(4)" style="display:inline-block;background:transparent;color:#C8922A;border:2px solid #C8922A;text-decoration:none;font-size:1rem;padding:18px 44px;border-radius:50px;margin-left:12px">📍 Kontakt</a>
+</div></div></div>
+
+<div class="section" id="s1"><div class="sticky"><div class="scene-content" id="sc1">
+<h2>Náš <span class="accent">príbeh</span></h2>
+<div class="divider"></div>
+<p style="margin-bottom:20px;opacity:0.85">Victoria Trnava vznikla z osobnej skúsenosti — keď sme plánovali vlastnú svadbu, nemohli sme nájsť v Trnave miesto, ktoré by spĺňalo všetky naše predstavy. Preto sme ho vytvorili. Jednoduchý, čistý, krásny a neutrálny priestor s detským ihriskom a terasami priamo v centre Trnavy.</p>
+<p style="margin-bottom:32px;opacity:0.85">Sme prvá eventová reštaurácia v Trnave. Zakladáme si na kvalite jedla, individualnom prístupe a na tom, aby každý deň bol pre vás nezabudnuteľný. Každú akciu „šijeme na mieru".</p>
+<div class="stats">
+<div class="stat-box"><div class="stat-num" data-target="75">0</div><div class="stat-label">miest v sále</div></div>
+<div class="stat-box"><div class="stat-num" data-target="40">0</div><div class="stat-label">miest na terase</div></div>
+<div class="stat-box"><div class="stat-num" data-target="200">0</div><div class="stat-label">svadieb a akcií</div></div>
+<div class="stat-box"><div class="stat-num" data-target="100">0</div><div class="stat-label">% spokojnosť hostí</div></div>
+</div>
+</div></div></div>
+
+<div class="section" id="s2"><div class="sticky"><div class="scene-content" id="sc2">
+<h2>Naše <span class="accent">služby</span></h2>
+<div class="divider"></div>
+<div class="cards">
+<div class="card"><div class="card-icon">💒</div><div class="card-title">Svadby</div><p style="opacity:0.8;font-size:0.95rem">Elegantná svadobná sála pre 75 hostí + terasa pre 40. Svadobné menu na mieru, výzdoba, obsluha — všetko pod jednou strechou.</p><p style="color:#C8922A;margin-top:8px;font-weight:700">Cenová ponuka individuálna</p></div>
+<div class="card"><div class="card-icon">🎂</div><div class="card-title">Rodinné oslavy</div><p style="opacity:0.8;font-size:0.95rem">Narodeniny, krsty, prvé prijímania, výročia. Každá oslava dostane rovnakú starostlivosť ako svadba.</p><p style="color:#C8922A;margin-top:8px;font-weight:700">od 20 €/osoba</p></div>
+<div class="card"><div class="card-icon">💼</div><div class="card-title">Firemné večierky</div><p style="opacity:0.8;font-size:0.95rem">Teambuildingové večierky, vianočné akcie, konferencie a školenia v príjemnom prostredí.</p><p style="color:#C8922A;margin-top:8px;font-weight:700">od 15 €/osoba</p></div>
+<div class="card"><div class="card-icon">🍽️</div><div class="card-title">Catering & Menu</div><p style="opacity:0.8;font-size:0.95rem">Jedlo pripravené s láskou z kvalitných surovín — slovenská i medzinárodná kuchyňa, svadobné menu na mieru.</p><p style="color:#C8922A;margin-top:8px;font-weight:700">Menu od 25 €/osoba</p></div>
+</div>
+</div></div></div>
+
+<div class="section" id="s3"><div class="sticky"><div class="scene-content" id="sc3">
+<div class="quote-text">"Victoria znamená víťazstvo — víťazstvo lásky, radosti a krásnych spomienok, ktoré si so sebou odnesiete."</div>
+<div class="divider"></div>
+<p style="opacity:0.85;max-width:650px">Sústredíme sa presne na váš veľký deň. Vaše priania a nápady sú pre nás inšpiráciou. Každý detail — od výzdoby, cez menu, až po obsluhu — koordinujeme tak, aby ste sa mohli úplne uvoľniť a užívať si každý okamih.</p>
+</div></div></div>
+
+<div class="section" id="s4"><div class="sticky"><div class="scene-content" id="sc4">
+<h2>Kontaktujte <span class="accent">nás</span></h2>
+<div class="divider"></div>
+<div class="contact-grid">
+<div class="contact-item"><div class="contact-icon">📍</div><div class="contact-text"><h3>Adresa</h3><p style="opacity:0.8">Centrum Trnavy<br>917 01 Trnava</p></div></div>
+<div class="contact-item"><div class="contact-icon">📞</div><div class="contact-text"><h3>Telefón</h3><p style="opacity:0.8">0905 334 123</p></div></div>
+<div class="contact-item"><div class="contact-icon">📧</div><div class="contact-text"><h3>Email</h3><p style="opacity:0.8">trnavavictoria@gmail.com</p></div></div>
+<div class="contact-item"><div class="contact-icon">🕐</div><div class="contact-text"><h3>Prevádzka</h3><p style="opacity:0.8">Podľa rezervácií<br>(nie denná reštaurácia)</p></div></div>
+</div>
+<div style="margin-top:32px;display:flex;flex-wrap:wrap;gap:12px">
+<a href="https://wa.me/421905334123" style="display:inline-block;background:#25D366;color:#fff;text-decoration:none;font-weight:700;padding:18px 44px;border-radius:50px">💬 WhatsApp</a>
+<a href="tel:0905334123" style="display:inline-block;background:#C8922A;color:#000;text-decoration:none;font-weight:700;padding:18px 44px;border-radius:50px;margin-left:12px">📞 Zavolať</a>
+</div>
+</div></div></div>
+
+<!-- Elegant event mascot: figure with bow tie and champagne -->
+<svg class="mascot" id="mascot" viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg">
+<rect x="22" y="72" width="56" height="58" rx="8" fill="#1a1a2e"/>
+<rect x="38" y="72" width="24" height="50" rx="2" fill="#fff" opacity="0.95"/>
+<!-- Bow tie -->
+<polygon points="44,82 50,87 56,82 50,77" fill="#C8922A"/>
+<circle cx="50" cy="46" r="28" fill="#FDDCB5"/>
+<ellipse cx="50" cy="22" rx="22" ry="8" fill="#3d2b1f"/>
+<ellipse cx="40" cy="46" rx="6" ry="7" fill="#fff"/>
+<ellipse cx="60" cy="46" rx="6" ry="7" fill="#fff"/>
+<circle cx="40" cy="46" r="4" fill="#2D3B55"/>
+<circle cx="60" cy="46" r="4" fill="#2D3B55"/>
+<circle cx="42" cy="44" r="1.5" fill="#fff"/>
+<circle cx="62" cy="44" r="1.5" fill="#fff"/>
+<path d="M38 60 Q50 68 62 60" stroke="#C8922A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+<circle cx="33" cy="55" r="5" fill="#FFB6A3" opacity="0.5"/>
+<circle cx="67" cy="55" r="5" fill="#FFB6A3" opacity="0.5"/>
+<!-- Champagne glass -->
+<path d="M70 68 L65 85 L75 85 Z" fill="rgba(200,200,100,0.7)"/>
+<line x1="70" y1="85" x2="70" y2="95" stroke="#888" stroke-width="2"/>
+<line x1="65" y1="95" x2="75" y2="95" stroke="#888" stroke-width="2"/>
+<!-- Bubbles -->
+<circle cx="68" cy="76" r="1.5" fill="#fff" opacity="0.8"/>
+<circle cx="72" cy="71" r="1" fill="#fff" opacity="0.8"/>
+<circle cx="70" cy="79" r="1" fill="#fff" opacity="0.6"/>
+</svg>
+<div class="speech-bubble" id="speechBubble">Victoria Trnava! 💒</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');let W=window.innerWidth,H=window.innerHeight;canvas.width=W;canvas.height=H;
+window.addEventListener('resize',()=>{W=window.innerWidth;H=window.innerHeight;canvas.width=W;canvas.height=H;});
+let scrollProgress=0,frame=0;
+window.addEventListener('scroll',()=>{const m=document.body.scrollHeight-window.innerHeight;scrollProgress=window.scrollY/m;document.getElementById('progress').style.width=(scrollProgress*100)+'%';if(window.scrollY>60)document.getElementById('nav').classList.add('scrolled');else document.getElementById('nav').classList.remove('scrolled');});
+const particles=Array.from({length:80},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-0.5)*0.2,vy:(Math.random()-0.5)*0.2,size:Math.random()*2+0.5,opacity:Math.random()*0.5+0.1}));
+const bokeh=Array.from({length:20},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*40+10,opacity:Math.random()*0.08+0.02,speed:Math.random()*0.003+0.001}));
+let gO=0;
+function animate(){
+frame++;ctx.clearRect(0,0,W,H);
+const g=ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,W*0.8);g.addColorStop(0,'rgba(10,5,30,1)');g.addColorStop(1,'rgba(2,8,24,1)');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+const gl=ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,W*0.4);gl.addColorStop(0,'rgba(200,146,42,0.05)');gl.addColorStop(1,'transparent');ctx.fillStyle=gl;ctx.fillRect(0,0,W,H);
+ctx.save();ctx.strokeStyle='rgba(200,146,42,0.05)';ctx.lineWidth=1;const sp=60;for(let x=(gO%sp)-sp;x<W;x+=sp){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}for(let y=0;y<H;y+=sp){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}ctx.restore();gO+=0.2;
+particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;ctx.save();ctx.globalAlpha=p.opacity;ctx.fillStyle='#C8922A';ctx.shadowColor='#C8922A';ctx.shadowBlur=6;ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,Math.PI*2);ctx.fill();ctx.restore();});
+particles.forEach((p,i)=>{particles.slice(i+1,i+4).forEach(p2=>{const d=Math.hypot(p.x-p2.x,p.y-p2.y);if(d<80){ctx.save();ctx.globalAlpha=0.04*(1-d/80);ctx.strokeStyle='#C8922A';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p2.x,p2.y);ctx.stroke();ctx.restore();}});});
+bokeh.forEach(b=>{b.y-=b.speed;if(b.y+b.r<0)b.y=H+b.r;ctx.save();ctx.globalAlpha=b.opacity;const bg=ctx.createRadialGradient(b.x,b.y,0,b.x,b.y,b.r);bg.addColorStop(0,'rgba(200,146,42,0.5)');bg.addColorStop(1,'transparent');ctx.fillStyle=bg;ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);ctx.fill();ctx.restore();});
+const t=frame/80;ctx.save();ctx.globalAlpha=0.06;ctx.font='50px serif';ctx.fillText('💍',W*0.1+Math.sin(t)*20,H*0.25+Math.cos(t)*15);ctx.fillText('🥂',W*0.85+Math.sin(t*0.8)*25,H*0.6+Math.cos(t)*20);ctx.restore();
+requestAnimationFrame(animate);}
+animate();
+gsap.registerPlugin(ScrollTrigger);let cs=-1;const msgs=['Victoria Trnava! 💒','Náš príbeh lásky! ❤️','Všetko pod jednou strechou! ✨','Váš deň, vaše priania! 💍','Rezervujte termín! 📞'];
+function setScene(i){if(cs===i)return;if(cs>=0){document.getElementById('sc'+cs).classList.remove('active');document.querySelectorAll('.dot')[cs].classList.remove('active');}cs=i;document.getElementById('sc'+i).classList.add('active');document.querySelectorAll('.dot')[i].classList.add('active');const b=document.getElementById('speechBubble');b.textContent=msgs[i];b.style.opacity='1';setTimeout(()=>b.style.opacity='0',3000);gsap.to('#mascot',{rotation:360,duration:0.5,ease:'back.out(1.7)',onComplete:()=>gsap.set('#mascot',{rotation:0})});}
+for(let i=0;i<5;i++) ScrollTrigger.create({trigger:'#s'+i,start:'top center',end:'bottom center',onEnter:()=>setScene(i),onEnterBack:()=>setScene(i)});
+gsap.to('#mascot',{y:-15,duration:1.2,repeat:-1,yoyo:true,ease:'sine.inOut'});
+document.getElementById('mascot').addEventListener('click',()=>{const m=['Šťastná svadba! 💒','Vitajte! 🥂','Rezervujte! 📞','Vaša oslava! 🎉'];const b=document.getElementById('speechBubble');b.textContent=m[Math.floor(Math.random()*m.length)];b.style.opacity='1';gsap.to('#mascot',{rotation:360,duration:0.6,ease:'back.out'});setTimeout(()=>b.style.opacity='0',3000);});
+const counters=document.querySelectorAll('[data-target]');const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){const el=e.target,target=parseInt(el.dataset.target);let s=0;const step=target/60;const t=setInterval(()=>{s+=step;if(s>=target){el.textContent=target+'+';clearInterval(t);}else el.textContent=Math.floor(s)+'+';},33);obs.unobserve(el);}});});
+counters.forEach(c=>obs.observe(c));
+function scrollToScene(i){window.scrollTo({top:document.getElementById('s'+i).offsetTop+100,behavior:'smooth'});}
+document.addEventListener('DOMContentLoaded',()=>setScene(0));setScene(0);
+</script>
+</body>
+</html>
